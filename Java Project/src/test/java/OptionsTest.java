@@ -1,16 +1,18 @@
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import service.testing.GitHubUtility;
+import service.testing.PropertyReader;
 
 import java.io.IOException;
 
-public class Get200 {
+public class OptionsTest {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
@@ -19,6 +21,7 @@ public class Get200 {
 
     @BeforeMethod
     public void setup(){
+
         client = HttpClientBuilder.create().build();
     }
 
@@ -28,24 +31,17 @@ public class Get200 {
         response.close();
     }
 
-    @Test(dataProvider = "endpoints")
-    public void firstTest(String endpoint) throws IOException {
+    @Test
+    public void optionsTest() throws Exception{
 
-        HttpGet request = new HttpGet(BASE_URL + endpoint);
+        String header = "Access-Control-Allow-Methods";
+        String expectedReply = "GET, POST, PATCH, PUT, DELETE";
+
+        HttpOptions request = new HttpOptions(BASE_URL);
         response = client.execute(request);
 
-        int actualStatusCode = response.getStatusLine().getStatusCode();
+        Assert.assertEquals(expectedReply, GitHubUtility.getHeader(response, header), "Headers found");
 
-        Assert.assertEquals(actualStatusCode, 200);
-    }
-
-    @DataProvider
-    private Object[][] endpoints(){
-        return new Object[][]{
-                {""},
-                {"/rate_limit"},
-                {"/users/olgadarii"}
-        };
     }
 
 }

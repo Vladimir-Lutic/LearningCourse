@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class Get200 {
+public class Get401 {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
@@ -28,24 +28,24 @@ public class Get200 {
         response.close();
     }
 
+    @DataProvider
+    private Object[][] endpoints(){
+        return new Object[][]{
+                {"/user"},
+                {"/user/followers"},
+                {"/notifications"}
+        };
+    }
+
     @Test(dataProvider = "endpoints")
-    public void firstTest(String endpoint) throws IOException {
+    public void getError(String endpoint)  throws IOException{
 
         HttpGet request = new HttpGet(BASE_URL + endpoint);
         response = client.execute(request);
 
         int actualStatusCode = response.getStatusLine().getStatusCode();
 
-        Assert.assertEquals(actualStatusCode, 200);
-    }
-
-    @DataProvider
-    private Object[][] endpoints(){
-        return new Object[][]{
-                {""},
-                {"/rate_limit"},
-                {"/users/olgadarii"}
-        };
+        Assert.assertEquals(actualStatusCode, 401);
     }
 
 }
