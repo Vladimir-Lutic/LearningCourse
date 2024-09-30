@@ -17,8 +17,6 @@ public class OptionsTest {
     CloseableHttpClient client;
     CloseableHttpResponse response;
 
-    public static final String BASE_URL = "https://api.github.com";
-
     @BeforeMethod
     public void setup(){
 
@@ -37,7 +35,7 @@ public class OptionsTest {
         String header = "Access-Control-Allow-Methods";
         String expectedReply = "GET, POST, PATCH, PUT, DELETE";
 
-        HttpOptions request = new HttpOptions(BASE_URL);
+        HttpOptions request = new HttpOptions(PropertyReader.getProperty("base_url"));
         response = client.execute(request);
 
         Assert.assertEquals(expectedReply, GitHubUtility.getHeader(response, header), "Headers found");
