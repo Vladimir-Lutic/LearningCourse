@@ -7,6 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import service.testing.GitHubUtility;
+import service.testing.PropertyReader;
 
 import java.io.IOException;
 
@@ -14,8 +15,6 @@ public class TestResponseHeaders {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
-
-    public static final String BASE_URL = "https://api.github.com";
 
     @BeforeMethod
     public void setup(){
@@ -32,7 +31,7 @@ public class TestResponseHeaders {
     @Test
     public void verifyResponseHeaders() throws Exception{
 
-        HttpGet request = new HttpGet(BASE_URL);
+        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url"));
         response = client.execute(request);
 
         String headerValue = GitHubUtility.getHeader(response, "Server");
@@ -44,7 +43,7 @@ public class TestResponseHeaders {
     @Test
     public void headerIsPresent() throws Exception{
 
-        HttpGet request = new HttpGet(BASE_URL);
+        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url"));
         response = client.execute(request);
 
         Boolean headerIsPresent = GitHubUtility.headerIsPresent(response, "ETag");
