@@ -5,12 +5,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import service.testing.GitHubUtility;
 
 import java.io.IOException;
 
-public class Get200 {
+public class TestResponseHeaders {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
@@ -19,6 +19,7 @@ public class Get200 {
 
     @BeforeMethod
     public void setup(){
+
         client = HttpClientBuilder.create().build();
     }
 
@@ -28,24 +29,26 @@ public class Get200 {
         response.close();
     }
 
-    @Test(dataProvider = "endpoints")
-    public void firstTest(String endpoint) throws IOException {
+    @Test
+    public void verifyResponseHeaders() throws Exception{
 
-        HttpGet request = new HttpGet(BASE_URL + endpoint);
+        HttpGet request = new HttpGet(BASE_URL);
         response = client.execute(request);
 
-        int actualStatusCode = response.getStatusLine().getStatusCode();
+        String headerValue = GitHubUtility.getHeader(response, "Server");
 
-        Assert.assertEquals(actualStatusCode, 200);
+        Assert.assertEquals(headerValue, "github.com");
+
     }
 
-    @DataProvider
-    private Object[][] endpoints(){
-        return new Object[][]{
-                {""},
-                {"/rate_limit"},
-                {"/users/olgadarii"}
-        };
-    }
+    @Test
+    public void headerIsPresent() throws Exception{
 
+        HttpGet request = new HttpGet(BASE_URL);
+        response = client.execute(request);
+
+        Boolean headerIsPresent = GitHubUtility.headerIsPresent(response, "ETag");
+
+        Assert.assertTrue(headerIsPresent);
+    }
 }
