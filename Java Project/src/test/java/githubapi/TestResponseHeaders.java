@@ -1,4 +1,5 @@
-import org.apache.http.HttpRequest;
+package githubapi;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -6,13 +7,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import service.testing.PropertyReader;
+import githubapi.testing.GitHubUtility;
+import githubapi.testing.PropertyReader;
 
 import java.io.IOException;
 
-public class Get404 {
+public class TestResponseHeaders {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
@@ -29,22 +30,26 @@ public class Get404 {
         response.close();
     }
 
-    /*@DataProvider
-    private Object[][] endpoints(){
-        return new Object[][]{
-                {"/user"},
-                {"/user/followers"},
-                {"/notifications"}
-        };
-    }*/
+    @Test
+    public void verifyResponseHeaders() throws Exception{
 
-    @Test//(dataProvider = "endpoints")
-    public void getBadRequest() throws Exception{
-
-        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url") + "/non_existent_endpoint");
+        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url"));
         response = client.execute(request);
 
-        Assert.assertEquals(response.getStatusLine().getStatusCode(), 404);
+        String headerValue = GitHubUtility.getHeader(response, "Server");
 
+        Assert.assertEquals(headerValue, "github.com");
+
+    }
+
+    @Test
+    public void headerIsPresent() throws Exception{
+
+        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url"));
+        response = client.execute(request);
+
+        Boolean headerIsPresent = GitHubUtility.headerIsPresent(response, "ETag");
+
+        Assert.assertTrue(headerIsPresent);
     }
 }

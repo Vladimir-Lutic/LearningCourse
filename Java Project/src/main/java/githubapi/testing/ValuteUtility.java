@@ -1,7 +1,7 @@
-package service.testing;
+package githubapi.testing;
 
-import service.testing.dto.ValCurs;
-import service.testing.dto.Valute;
+import githubapi.testing.dto.ValCurs;
+import githubapi.testing.dto.Valute;
 
 import java.util.Comparator;
 

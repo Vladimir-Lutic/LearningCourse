@@ -1,4 +1,4 @@
-package service.testing.dto;
+package githubapi.testing.dto;
 
 public class User {
 

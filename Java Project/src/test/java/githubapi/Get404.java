@@ -1,3 +1,5 @@
+package githubapi;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -5,20 +7,19 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import githubapi.testing.PropertyReader;
 
 import java.io.IOException;
 
-public class Get200 {
+public class Get404 {
 
     CloseableHttpClient client;
     CloseableHttpResponse response;
 
-    public static final String BASE_URL = "https://api.github.com";
-
     @BeforeMethod
     public void setup(){
+
         client = HttpClientBuilder.create().build();
     }
 
@@ -28,24 +29,22 @@ public class Get200 {
         response.close();
     }
 
-    @Test(dataProvider = "endpoints")
-    public void firstTest(String endpoint) throws IOException {
-
-        HttpGet request = new HttpGet(BASE_URL + endpoint);
-        response = client.execute(request);
-
-        int actualStatusCode = response.getStatusLine().getStatusCode();
-
-        Assert.assertEquals(actualStatusCode, 200);
-    }
-
-    @DataProvider
+    /*@DataProvider
     private Object[][] endpoints(){
         return new Object[][]{
-                {""},
-                {"/rate_limit"},
-                {"/users/olgadarii"}
+                {"/user"},
+                {"/user/followers"},
+                {"/notifications"}
         };
-    }
+    }*/
 
+    @Test//(dataProvider = "endpoints")
+    public void getBadRequest() throws Exception{
+
+        HttpGet request = new HttpGet(PropertyReader.getProperty("base_url") + "/non_existent_endpoint");
+        response = client.execute(request);
+
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), 404);
+
+    }
 }
