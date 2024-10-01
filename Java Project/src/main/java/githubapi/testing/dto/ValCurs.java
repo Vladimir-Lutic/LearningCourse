@@ -1,4 +1,4 @@
-package service.testing.dto;
+package githubapi.testing.dto;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;

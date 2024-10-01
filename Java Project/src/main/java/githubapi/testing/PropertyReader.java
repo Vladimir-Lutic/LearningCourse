@@ -1,4 +1,4 @@
-package service.testing;
+package githubapi.testing;
 
 import java.io.File;
 import java.io.FileInputStream;

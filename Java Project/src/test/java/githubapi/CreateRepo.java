@@ -1,3 +1,5 @@
+package githubapi;
+
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -10,7 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import service.testing.PropertyReader;
+import githubapi.testing.PropertyReader;
 
 import java.io.IOException;
 

@@ -1,11 +1,13 @@
-package service.testing;
+package githubapi.testing;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import service.testing.dto.User;
+import githubapi.testing.dto.User;
 
 import java.io.IOException;
 import java.util.Arrays;

@@ -1,12 +1,13 @@
-package service.testing;
+package githubapi.testing;
 
 
 import com.thoughtworks.xstream.XStream;
+import githubapi.testing.dto.ValCurs;
+import githubapi.testing.dto.Valute;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import service.testing.dto.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(PropertyReader.getProperty("bnmUrl"));
+        HttpGet request = new HttpGet(githubapi.testing.PropertyReader.getProperty("bnmUrl"));
         HttpResponse response = client.execute(request);
 
 // Get the response
@@ -34,7 +35,7 @@ public class Main {
        XStream xstream = new XStream();
 
         xstream.allowTypesByWildcard(new String[] {
-                "service.testing.dto.**"
+                "githubapi.testing.dto.**"
         });
 
         xstream.processAnnotations(ValCurs.class);
